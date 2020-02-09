@@ -1,0 +1,21 @@
+task clean {
+  dependsOn yarn_clean
+}
+
+task install {
+  dependsOn clean
+  dependsOn yarn_install
+  yarn_install.mustRunAfter clean
+}
+
+task build {
+  dependsOn install
+  dependsOn yarn_build
+  yarn_build.mustRunAfter install
+}
+
+task serve {
+  dependsOn build
+  dependsOn yarn_serve
+  yarn_serve.mustRunAfter build
+}
