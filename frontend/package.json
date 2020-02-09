@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "main": "lib/index.js",
   "scripts": {
-    "build": "npm-run-all compile bundle",
-    "compile": "npm-run-all compile:typescript",
+    "build": "npm-run-all compile",
+    "compile": "npm-run-all compile:typescript compile:sass",
     "compile:typescript": "tsc --build",
-    "bundle": "webpack --config webpack.config.ts",
+    "compile:sass": "webpack --config webpack.config.sass.ts",
     "clean": "rm -rf node_modules/ && rm -rf lib/ && rm -rf dist/"
   },
   "dependencies": {

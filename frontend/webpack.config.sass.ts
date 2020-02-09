@@ -19,7 +19,7 @@ const config: webpack.Configuration = {
           "style-loader",
           // translate CSS into CommonJS
           "css-loader",
-          // Compile Sas to CSS
+          // Compile sass to CSS
           "sass-loader"
         ]
       }
