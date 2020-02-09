@@ -84,7 +84,7 @@ output: {
 
 The `mode` field indicates to webpack to treat the output as a production build.
 
-The `entry` field indicates the index JavaScript file. Notice, that the entry is a `JavaScript` file in the `lib/` directory rather than a `TypeScript` file in the `src/` directory. Since we are using `TypeScript`, we build the output JavaScript and wtite it to `lib/` and we pass the built `index.js` file to webpack.
+The `entry` field indicates the index JavaScript file. Notice, that the entry is a `JavaScript` file in the `lib/` directory rather than a `TypeScript` file in the `src/` directory. Since we are using `TypeScript`, we build the output JavaScript and write it to `lib/` and we pass the built `index.js` file to webpack.
 
 Lastly, the `output` field indicates where to write the bundled output. Here we are telling `webpack` to write the output to a directory called `dist/` and call the output application `app.js`.
 
