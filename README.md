@@ -58,7 +58,7 @@ node {
 }
 ```
 
-The `version` and `yarnVersion` fields are self explanatory. The `distBaseUrl` specifies where we could download `Node` from. The `download = true` tells the plugin to download `Node` and `Yarn` and to **not** use the systems installed version. Lastly, the `workDir` and `yarnWorkDir` fields indicate where to download `Node` and `Yarn`.
+The `version` and `yarnVersion` fields are self explanatory. The `distBaseUrl` specifies where we could download `Node` from. The `download = true` tells the plugin to download `Node` and `Yarn` and to **not** use the systems installed version. Lastly, the `workDir` and `yarnWorkDir` fields indicate where to install `Node` and `Yarn`.
 
 All the variables used in the config block above are in the `gradle.properties` file.
 
