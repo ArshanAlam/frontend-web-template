@@ -13,3 +13,9 @@ task build {
   dependsOn yarn_build
   yarn_build.mustRunAfter install
 }
+
+task serve {
+  dependsOn build
+  dependsOn yarn_serve
+  yarn_serve.mustRunAfter build
+}

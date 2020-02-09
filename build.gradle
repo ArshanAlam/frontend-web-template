@@ -1,25 +1,18 @@
-/**
- *  Add the gradle-node-plugin so that we could get node and yarn.
- *
- */
+// Add the gradle-node-plugin so that we could get node and yarn.
 plugins {
-  id "com.moowork.node" version "1.3.1"
+  id "com.moowork.node" version "${gradleNodePluginVersion}"
 }
 
-/**
- * Apply the node plugin to all subprojects
- */
+// Apply the node plugin to all subprojects
 subprojects {
   apply plugin: "com.moowork.node"
 }
 
-/**
- * Configure the node plugin
- */
+// Configure the node plugin
 node {
-  version = "12.15.0"
-  yarnVersion = "1.22.0"
-  distBaseUrl = "https://nodejs.org/dist"
+  version = "${nodeVersion}"
+  yarnVersion = "${yarnVersion}"
+  distBaseUrl = "${nodeDistBaseUrl}"
   download = true
   workDir = file("${project.buildDir}/software/nodejs")
   yarnWorkDir = file("${project.buildDir}/software/yarn")
