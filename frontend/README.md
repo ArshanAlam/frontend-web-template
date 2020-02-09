@@ -30,7 +30,7 @@ The `build` script calls the `compile` script.
 ### Compile
 The `compile` script executes the `compile:typescript` and `compile:sass` scripts. The `compile:typescript` simply calls typescript and the `compile:sass` uses webpack to compile the `Sass`.
 
-The configuration for TypeScript and `webpack` are defined in `tsconfig.json` and `webpack.config.sass.ts`, respectively.
+The configuration for `TypeScript` and `webpack` are defined in `tsconfig.json` and `webpack.config.sass.ts`, respectively.
 
 
 ### Serve
@@ -43,21 +43,23 @@ Here we will explain what is going on in the `tsconfig.json` file.
 ```
 {
   "compilerOptions": {
-    "target": "es5",  /* tells the compiler what library version to include while compiling and what version of JS is emitted by the compiler */
-    "module": "commonjs", /* Specify module code generation. commonjs means that node could load the output. */
-    "allowJs": false, /* Allow javascript files to be compiled. */
-    "checkJs": false, /* Report errors in .js files. */
-    "outDir": "lib",  /* Redirect output structure to the directory. */
-    "removeComments": true, /* Do not emit comments to output. */
-    "strict": true, /* Enable all strict type-checking options. */
+    "target": "es5",            /* tells the compiler what library version to include while compiling and what version of JS is emitted by the compiler */
+    "module": "commonjs",       /* Specify module code generation. commonjs means that node could load the output. */
+    "allowJs": false,           /* Allow javascript files to be compiled. */
+    "checkJs": false,           /* Report errors in .js files. */
+    "outDir": "lib",            /* Redirect output structure to the directory. */
+    "removeComments": true,     /* Do not emit comments to output. */
+    "strict": true,             /* Enable all strict type-checking options. */
     "moduleResolution": "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-    "jsx": "react"  /* Specify JSX code generation: react will convert the jsx to JS` */
+    "jsx": "react"              /* Specify JSX code generation: react will convert the jsx to JS` */
   },
+
   /* Include the follow directories when compiling */
   "include": [
     "src",
     "style"
   ],
+
   /* Exclude the following directories when compiling */
   "exclude": [
     "node_modules",
