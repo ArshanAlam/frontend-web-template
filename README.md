@@ -7,7 +7,7 @@ To start development work, execute `./gradlew build` in the root of this project
 
 
 ### Where does my source code go?
-All [TypeScript](https://www.typescriptlang.org/) goes in the `frontend/src` directory and all [SASS](https://sass-lang.com/) goes in the `frontend/style` directory. The structure of the `frontend/` subproject is explained in `frontend/README.md`.
+All [TypeScript](https://www.typescriptlang.org/) goes in the `frontend/src` directory and all [Sass](https://sass-lang.com/) goes in the `frontend/style` directory. The structure of the `frontend/` subproject is explained in `frontend/README.md`.
 
 
 ### How do I run my application?
@@ -61,3 +61,20 @@ node {
 The `version` and `yarnVersion` fields are self explanatory. The `distBaseUrl` specifies the location to download `Node`. The `download = true` tells the plugin to download `Node` and `Yarn` and to **not** use the systems installed version. Lastly, the `workDir` and `yarnWorkDir` fields indicate where to download `Node` and `Yarn`.
 
 All the variables used in the config block above are in the `gradle.properties` file.
+
+
+### How to configure the subproject with Yarn
+You'll notice that this template is using `Yarn` to clean, install, build, and bundle the frontend components. This is done through the gradle-node-plugin and through the build tasks in `frontend/build.gradle`.
+
+#### Lets dissect a task
+```
+task build {
+  dependsOn install
+  dependsOn yarn_build
+  yarn_build.mustRunAfter install
+}
+```
+
+Above is the `build` task that gets executed when we run `./gradlew build` in the root of this template project. This task depends on the `install` task that is defined in `frontend/build.gradle` and the `yarn_build` task that is dynamically created by the gradle-node-plugin. The `yarn_build` gradle task executes the `build` script defined in the `scripts` field within the `frontend/package.json` file. This holds for all dynamically generated gradle tasks with the pattern `yarn_<script_name>`.
+
+Lastly, we chain tasks using `mustRunAfter`. In the example above we are indicating to gradle to run the `install` task before running the `yarn_build` task. Since the `build` task depends on `yarn_build`, than when we execute `build` it will run `install` before running `yarn_build`.
