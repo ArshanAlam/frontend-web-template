@@ -110,7 +110,7 @@ module: {
 
 
 ### HtmlWebpackPlugin
-The `HtmlWebpackPlugin` simplifies creation of HTML files to serve the webpack bundles. The `hash` field adds a hash in the filename which changes every compilation. The plugin will generate an HTML file for you.
+The `HtmlWebpackPlugin` simplifies creation of HTML files to serve the webpack bundle. The `hash` field adds a hash in the filename which changes with every compilation. The plugin will generate an HTML file for you.
 
 ```
 plugins: [
