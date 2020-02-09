@@ -15,11 +15,8 @@ const config: webpack.Configuration = {
         test: /\.s[ac]ss$/i,
         // note, these are executed from last to first (so sass-loader -> style-loader)
         use: [
-          // create `style` nodes from JS strings
           "style-loader",
-          // translate CSS into CommonJS
           "css-loader",
-          // Compile sass to CSS
           "sass-loader"
         ]
       }
