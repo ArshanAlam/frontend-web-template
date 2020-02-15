@@ -1,13 +1,15 @@
 import * as path from "path";
 import * as webpack from "webpack";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import * as UglifyJsPlugin from "uglifyjs-webpack-plugin";
 
 const config: webpack.Configuration = {
   mode: "production",
   entry: "./lib/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "app.js"
+    filename: "app.js",
+    chunkFilename: "[name].js",
   },
   module: {
     rules: [
@@ -26,7 +28,41 @@ const config: webpack.Configuration = {
     new HtmlWebpackPlugin({
       hash: true
     })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        default: false,
+        vendors: false,
+        vendor: {
+          enforce: true,
+          test: /node_modules/,
+          name(module) {
+            // get the name of the module. ex node_modules/packageName/not/this/part.js
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `chunk_${packageName.replace("@", '')}`;
+          }
+        }
+      }
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            unused: true,
+            dead_code: true,
+          },
+          output: {
+            comments: false,
+          }
+        },
+      })
+    ]
+  }
 };
 
 export default config;
