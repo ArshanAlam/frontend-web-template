@@ -9,7 +9,7 @@ const config: webpack.Configuration = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "app.js",
-    chunkFilename: "[name].js",
+    chunkFilename: "chunk_[name].js",
   },
   module: {
     rules: [
@@ -43,8 +43,9 @@ const config: webpack.Configuration = {
           name(module) {
             // get the name of the module. ex node_modules/packageName/not/this/part.js
             const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-            // npm package names are URL-safe, but some servers don't like @ symbols
-            return `chunk_${packageName.replace("@", '')}`;
+
+            // remove @ symbol from package name
+            return packageName.replace("@", '');
           }
         }
       }
