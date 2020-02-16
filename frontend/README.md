@@ -182,3 +182,5 @@ module.exports = {
   preset: "ts-jest"
 };
 ```
+
+To run the all tests execute `yarn test`.

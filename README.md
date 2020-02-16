@@ -78,3 +78,7 @@ task build {
 Above is the `build` task that gets executed when we run `./gradlew build` in the root of this template project. This task depends on the `install` task that is defined in `frontend/build.gradle` and the `yarn_build` task that is dynamically created by the gradle-node-plugin. The `yarn_build` gradle task executes the `build` script defined in the `scripts` field within the `frontend/package.json` file. This holds for all dynamically generated gradle tasks with the pattern `yarn_<script_name>`.
 
 Lastly, we chain tasks using `mustRunAfter`. In the example above we are indicating to gradle to run the `install` task before running the `yarn_build` task. Since the `build` task depends on `yarn_build`, than when we execute `build` it will run `install` before running `yarn_build`.
+
+
+## Running tests
+To run all jests in the frontend, please execute `./gradlew test`.
