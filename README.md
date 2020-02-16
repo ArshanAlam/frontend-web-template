@@ -81,4 +81,4 @@ Lastly, we chain tasks using `mustRunAfter`. In the example above we are indicat
 
 
 ## Running tests
-To run all jests in the frontend, please execute `./gradlew test`.
+To run all tests in the frontend, please execute `./gradlew test`.

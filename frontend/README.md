@@ -183,4 +183,4 @@ module.exports = {
 };
 ```
 
-To run the all tests execute `yarn test`.
+To run all tests execute `yarn test`.
