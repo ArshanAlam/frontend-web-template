@@ -119,3 +119,66 @@ plugins: [
   })
 ]
 ```
+
+
+
+### Chunks and Optimizations
+In the  Webpack config we have added some optimizations to speed up application load time.
+
+
+In the `optimization` block below, we are doing two things:
+
+1. Splitting vendor modules into chunk files so that they could be loaded in parallel
+2. removing all dead code, unused code, and comments from the bundled output
+
+```
+optimization: {
+  splitChunks: {
+    chunks: "all",
+    maxInitialRequests: Infinity,
+    minSize: 0,                     /* Minimum size, in bytes, for a chunk to be generated */
+    cacheGroups: {
+      default: false,               /* Disable the default behaviour for cacheGroups and vendor code */
+      vendors: false,
+      vendor: {
+        enforce: true,
+        test: /node_modules/,       /* Execute the following for all node_modules that are used */
+        name(module) {
+          // get the name of the module. ex node_modules/packageName/not/this/part.js
+          const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+          // remove @ symbol from package name
+          return packageName.replace("@", '');
+        }
+      }
+    }
+  },
+  minimizer: [
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          unused: true,
+          dead_code: true,
+        },
+        output: {
+          comments: false,
+        }
+      },
+    })
+  ]
+}
+```
+
+
+## Jest
+We are using Jest for testing our web application. Below is the very simple and self explanatory config for jest.
+
+```
+module.exports = {
+  // jest should be looking for tests in the 'tests` directory
+  roots: ["<rootDir>/tests"],
+
+  // ts-jest will take care of .ts and .tsx files only, leaving JavaScript files as-is
+  preset: "ts-jest"
+};
+```
