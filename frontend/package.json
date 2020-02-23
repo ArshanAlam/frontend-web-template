@@ -7,7 +7,7 @@
     "compile": "npm-run-all compile:typescript compile:sass",
     "compile:typescript": "tsc --build",
     "compile:sass": "webpack -p --config webpack.config.sass.ts",
-    "clean": "rm -rf node_modules/ && rm -rf lib/ && rm -rf dist/",
+    "clean": "rm -rf node_modules/ && rm -rf lib/ && rm -rf dist/ && rm -rf tsconfig.tsbuildinfo",
     "serve": "http-server dist/",
     "test": "jest --config=jest.config.js --all",
     "test:updateSnapshot": "jest --config=jest.config.js --updateSnapshot"
