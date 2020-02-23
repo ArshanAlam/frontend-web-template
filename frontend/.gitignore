@@ -25,5 +25,6 @@ yarn-error.log*
 /lib
 /dist
 
-# TypeScript
+# NPM, yarn, and TypeScript
 tsconfig.tsbuildinfo
+yarn.lock
