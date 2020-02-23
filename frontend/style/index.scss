@@ -1,3 +1,9 @@
+@import "~@blueprintjs/core";
+@import "~@blueprintjs/select";
+@import "~@blueprintjs/datetime";
+@import "~@blueprintjs/timezone";
+@import "~@blueprintjs/table";
+
 $bgColor: red;
 body {
   background-color: $bgColor;
