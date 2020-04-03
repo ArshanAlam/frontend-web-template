@@ -1,84 +1,186 @@
-# frontend-web-template
-This is a simple template for quickly getting started with building frontend web applications using [React](https://reactjs.org/) and [Blueprintjs](https://blueprintjs.com/).
+# Frontend
+This subproject contains the source code for the web application. We are using [React](https://reactjs.org/), [Blueprintjs](https://blueprintjs.com/), and [webpack](https://webpack.js.org/) as the basic building blocks.
+
+**Note: Please review the README.md in frontend-web-template**
 
 
-## How to get started?
-To start development work, execute `./gradlew build` in the root of this project. This project uses [gradle-node-plugin](https://github.com/srs/gradle-node-plugin) to build the `frontend/` subproject.
-
-
-### Where does my source code go?
-All [TypeScript](https://www.typescriptlang.org/) goes in the `frontend/src` directory and all [Sass](https://sass-lang.com/) goes in the `frontend/style` directory. The structure of the `frontend/` subproject is explained in `frontend/README.md`.
-
-
-### How do I run my application?
-To run your application you could execute `./gradlew serve`. This will start a simple http file server in the `frontend/dist` directory. The `frontend/dist` directory contains the bundled output from building, as described above.
-
-
-## Structure of this template
-For gradle to build the `frontend/` subproject we must first configure it! To do this, we start by including it in the `settings.gradle` file and creating a `frontend/build.gradle` file.
+## Yarn Scripts
+We are using `Yarn` to clean, build, and bundle this application. Here is the `scripts` field in `package.json`.
 
 ```
-// Name of the root project
-rootProject.name = 'frontend-web-template'
-
-// Include the 'frontend' subproject
-include 'frontend'
-```
-
-
-### How to configure gradle-node-plugin
-To configure the [gradle-node-plugin](https://github.com/srs/gradle-node-plugin) we start by adding the plugin in the `build.gradle` file.
-
-```
-plugins {
-  id "com.moowork.node" version "${gradleNodePluginVersion}"
-}
-```
-
-Since we have a subproject `frontend/`, we'd like this plugin to be available there also. To do this, we add the following in `build.gradle`. This will make the plugin available in all subprojects.
-
-```
-subprojects {
-  apply plugin: "com.moowork.node"
+"scripts": {
+  "build": "npm-run-all compile",
+  "compile": "npm-run-all compile:typescript compile:sass",
+  "compile:typescript": "tsc --build",
+  "compile:sass": "webpack --config webpack.config.sass.ts",
+  "clean": "rm -rf node_modules/ && rm -rf lib/ && rm -rf dist/",
+  "serve": "http-server dist/"
 }
 ```
 
 
-#### Let's configure Node and Yarn within the plugin:
-In the `build.gradle` file, you'll notice the following block:
+### Clean
+The `clean` script is very simple. We remove the `node_modules`, `lib`, and `dist` directories.
+
+
+### Build
+The `build` script calls the `compile` script.
+
+
+### Compile
+The `compile` script executes the `compile:typescript` and `compile:sass` scripts. The `compile:typescript` simply calls typescript and the `compile:sass` uses webpack to compile the `Sass`.
+
+The configuration for `TypeScript` and `webpack` are defined in `tsconfig.json` and `webpack.config.sass.ts`, respectively.
+
+
+### Serve
+Since the bundled output of the application is written to `dist/`, the `serve` script starts up a simple http file server in that directory to serve the application.
+
+
+## tsconfig.json
+Here we will explain what is going on in the `tsconfig.json` file.
 
 ```
-node {
-  version = "${nodeVersion}"
-  yarnVersion = "${yarnVersion}"
-  distBaseUrl = "${nodeDistBaseUrl}"
-  download = true
-  workDir = file("${project.buildDir}/software/nodejs")
-  yarnWorkDir = file("${project.buildDir}/software/yarn")
+{
+  "compilerOptions": {
+    "target": "es5",            /* tells the compiler what library version to include while compiling and what version of JS is emitted by the compiler */
+    "module": "commonjs",       /* Specify module code generation. commonjs means that node could load the output. */
+    "allowJs": false,           /* Allow javascript files to be compiled. */
+    "checkJs": false,           /* Report errors in .js files. */
+    "outDir": "lib",            /* Redirect output structure to the directory. */
+    "removeComments": true,     /* Do not emit comments to output. */
+    "strict": true,             /* Enable all strict type-checking options. */
+    "moduleResolution": "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    "jsx": "react"              /* Specify JSX code generation: react will convert the jsx to JS` */
+  },
+
+  /* Include the follow directories when compiling */
+  "include": [
+    "src",
+    "style"
+  ],
+
+  /* Exclude the following directories when compiling */
+  "exclude": [
+    "node_modules",
+    "lib"
+  ]
 }
 ```
 
-The `version` and `yarnVersion` fields are self explanatory. The `distBaseUrl` specifies where we could download `Node` from. The `download = true` tells the plugin to download `Node` and `Yarn` and to **not** use the systems installed version. Lastly, the `workDir` and `yarnWorkDir` fields indicate where to install `Node` and `Yarn`.
 
-All the variables used in the config block above are in the `gradle.properties` file.
+## webpack.config.sass.ts
+Below we explain the `webpack` config.
 
 
-### How to configure the subproject with Yarn
-You'll notice that this template is using `Yarn` to clean, install, build, and bundle the frontend components. This is done through the gradle-node-plugin and through the build tasks in `frontend/build.gradle`.
-
-#### Lets dissect a task
 ```
-task build {
-  dependsOn install
-  dependsOn yarn_build
-  yarn_build.mustRunAfter install
+mode: "production",
+entry: "./lib/index.js",
+output: {
+  path: path.resolve(__dirname, "dist"),
+  filename: "app.js"
 }
 ```
 
-Above is the `build` task that gets executed when we run `./gradlew build` in the root of this template project. This task depends on the `install` task that is defined in `frontend/build.gradle` and the `yarn_build` task that is dynamically created by the gradle-node-plugin. The `yarn_build` gradle task executes the `build` script defined in the `scripts` field within the `frontend/package.json` file. This holds for all dynamically generated gradle tasks with the pattern `yarn_<script_name>`.
+The `mode` field indicates to webpack to treat the output as a production build.
 
-Lastly, we chain tasks using `mustRunAfter`. In the example above we are indicating to gradle to run the `install` task before running the `yarn_build` task. Since the `build` task depends on `yarn_build`, than when we execute `build` it will run `install` before running `yarn_build`.
+The `entry` field indicates the index JavaScript file. Notice, that the entry is a `JavaScript` file in the `lib/` directory rather than a `TypeScript` file in the `src/` directory. Since we are using `TypeScript`, we build the output JavaScript and write it to `lib/` and we pass the built `index.js` file to webpack.
+
+Lastly, the `output` field indicates where to write the bundled output. Here we are telling `webpack` to write the output to a directory called `dist/` and call the output application `app.js`.
 
 
-## Running tests
-To run all tests in the frontend, please execute `./gradlew test`.
+### Style Loaders
+Below we define a rule that will execute on all files with the file extension `sass` and `scss`. The rule tells webpack to execute the `sass-loader`, that will compile the sass into css. Than execute the `css-loader`, which will interpret `@import` and `url()` like `import/require()` and will resolve them. Lastly, the `style-loader` injects CSS into the DOM.
+
+```
+module: {
+  rules: [
+    {
+      test: /\.s[ac]ss$/i,
+      // note, these are executed from last to first (so sass-loader -> style-loader)
+      use: [
+        "style-loader",
+        "css-loader",
+        "sass-loader"
+      ]
+    }
+  ]
+}
+```
+
+
+### HtmlWebpackPlugin
+The `HtmlWebpackPlugin` simplifies creation of HTML files to serve the webpack bundle. The `hash` field adds a hash in the filename which changes with every compilation. The plugin will generate an HTML file for you.
+
+```
+plugins: [
+  new HtmlWebpackPlugin({
+    hash: true
+  })
+]
+```
+
+
+
+### Chunks and Optimizations
+In the  Webpack config we have added some optimizations to speed up application load time.
+
+
+In the `optimization` block below, we are doing two things:
+
+1. Splitting vendor modules into chunk files so that they could be loaded in parallel
+2. removing all dead code, unused code, and comments from the bundled output
+
+```
+optimization: {
+  splitChunks: {
+    chunks: "all",
+    maxInitialRequests: Infinity,
+    minSize: 0,                     /* Minimum size, in bytes, for a chunk to be generated */
+    cacheGroups: {
+      default: false,               /* Disable the default behaviour for cacheGroups and vendor code */
+      vendors: false,
+      vendor: {
+        enforce: true,
+        test: /node_modules/,       /* Execute the following for all node_modules that are used */
+        name(module) {
+          // get the name of the module. ex node_modules/packageName/not/this/part.js
+          const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+          // remove @ symbol from package name
+          return packageName.replace("@", '');
+        }
+      }
+    }
+  },
+  minimizer: [
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          unused: true,
+          dead_code: true,
+        },
+        output: {
+          comments: false,
+        }
+      },
+    })
+  ]
+}
+```
+
+
+## Jest
+We are using Jest for testing our web application. Below is the very simple and self explanatory config for jest.
+
+```
+module.exports = {
+  // jest should be looking for tests in the 'tests` directory
+  roots: ["<rootDir>/tests"],
+
+  // ts-jest will take care of .ts and .tsx files only, leaving JavaScript files as-is
+  preset: "ts-jest"
+};
+```
+
+To run all tests execute `yarn test`.

@@ -2,10 +2,11 @@ import path from "path";
 import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import UglifyJsPlugin from "uglifyjs-webpack-plugin";
+import { getExternalIpAddress } from "./utils/projectUtils";
 
 const config: webpack.Configuration = {
   mode: "production",
-  entry: "./lib/index.js",
+  entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "app.js",
@@ -13,6 +14,11 @@ const config: webpack.Configuration = {
   },
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.s[ac]ss$/i,
         // note, these are executed from last to first (so sass-loader -> style-loader)
@@ -63,6 +69,12 @@ const config: webpack.Configuration = {
         },
       })
     ]
+  },
+  devServer: {
+    contentBase: path.resolve(__dirname, "dist"),
+    compress: true,
+    host: getExternalIpAddress(),
+    port: 9000
   }
 };
 

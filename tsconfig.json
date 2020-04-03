@@ -2,14 +2,18 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "moduleResolution": "node",
     "allowJs": false,
     "checkJs": false,
-    "outDir": "lib",
+    "outDir": "dist",
     "removeComments": true,
     "strict": true,
-    "moduleResolution": "node",
     "jsx": "react",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ]
   },
   "include": [
     "src",
@@ -17,6 +21,6 @@
   ],
   "exclude": [
     "node_modules",
-    "lib"
+    "dist"
   ]
 }
