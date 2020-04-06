@@ -113,3 +113,9 @@ yarn.lock
 .yarn/unplugged
 .yarn/build-state.yml
 .pnp.*
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build

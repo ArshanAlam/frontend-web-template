@@ -1,0 +1,11 @@
+/**
+ *
+ */
+conjure {
+  typescript {
+    version = gitVersion()
+  }
+  java {
+    useImmutableBytes = true
+  }
+}

@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { H1 } from "@blueprintjs/core";
+import * as api from "api";
 
 import "../style/index.scss";
 
@@ -11,4 +12,5 @@ ReactDOM.render(
   document.body
 );
 
+console.log(api);
 console.log("Hello World!");

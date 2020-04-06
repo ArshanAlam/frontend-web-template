@@ -1,0 +1,6 @@
+# The gradle consistent versions plugin uses this file to
+# ensure that all subprojects have consistent dependency versions
+com.palantir.conjure:* = 4.4.0
+com.palantir.conjure.typescript:* = 4.1.0
+com.palantir.conjure.java:* =  5.14.0
+javax.annotation:javax.annotation-api = 1.3.2
